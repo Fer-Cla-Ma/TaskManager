@@ -1,0 +1,26 @@
+﻿@page
+@model TaskManager.Web.Pages.Tasks.IndexModel
+@{
+}
+
+<h1>Lista de tareas</h1>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Titulo</th>
+			<th>Completada</th>
+			<th>Fecha Limite</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var task in Model.TaskItems)
+		{
+			<tr>
+				<td>@task.Title</td>
+				<td>@(task.IsCompleted ? "Si" : "No")</td>
+				<td>@(task.DueDate?.ToString("dd/MM/yyyy") ?? "-")</td>
+			</tr>			
+		}
+	</tbody>
+</table>

@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaskManager.Domain.Entities;
 
 namespace TaskManager.Infrastructure.Persistence
@@ -16,13 +11,14 @@ namespace TaskManager.Infrastructure.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            // Configuración opcional de relaciones y restricciones
+                                    
             modelBuilder.Entity<TaskItem>()
                 .HasOne(t => t.User)
                 .WithMany(u => u.Tasks)
                 .HasForeignKey(t => t.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .IsRequired(false) // <-- Permite null
+                .OnDelete(DeleteBehavior.SetNull); 
+
         }
     }
 }

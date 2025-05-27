@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197 d17.13
+VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Domain", "TaskManager.Domain\TaskManager.Domain.csproj", "{CD5951FC-6F57-467E-89EC-1B7EC81D7D1C}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Infrastructure", "TaskManager.Infrastructure\TaskManager.Infrastructure.csproj", "{C3DD9DB1-03B9-4120-96A4-E7E9935358D1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.API", "TaskManager.API\TaskManager.API.csproj", "{D6445A72-2DA6-4D00-BE30-86ACAB20B495}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Web", "TaskManager.Web\TaskManager.Web.csproj", "{D748471B-8875-4033-BECF-C6B3AEF9D89D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{D6445A72-2DA6-4D00-BE30-86ACAB20B495}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6445A72-2DA6-4D00-BE30-86ACAB20B495}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6445A72-2DA6-4D00-BE30-86ACAB20B495}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D748471B-8875-4033-BECF-C6B3AEF9D89D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D748471B-8875-4033-BECF-C6B3AEF9D89D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D748471B-8875-4033-BECF-C6B3AEF9D89D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D748471B-8875-4033-BECF-C6B3AEF9D89D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

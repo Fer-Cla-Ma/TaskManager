@@ -1,4 +1,3 @@
-using System;
 
 namespace TaskManager.Domain.Entities
 {

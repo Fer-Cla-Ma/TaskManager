@@ -5,12 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Domain.Entities;
 
-namespace TaskManager.Domain.Interfaces
+namespace TaskManager.Domain.Repositories
 {
-    public interface IUserRepository
+    public interface IUserRepository : IRepository<User>
     {
-        Task<User?> GetByIdAsync(Guid id);
         Task<User?> GetByEmailAsync(string email);
-        Task AddAsync(User user);
     }
 }

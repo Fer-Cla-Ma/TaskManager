@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using TaskManager.Application.Services;
+using TaskManager.Application.Services.Interfaces;
 using TaskManager.Domain.Entities;
+using TaskManager.Domain.Repositories;
 using TaskManager.Infrastructure.Persistence;
+using TaskManager.Infrastructure.Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,16 +12,23 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TaskManagerDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+//builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<ITaskItemService, TaskItemService>();
+
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+
+// Add Swagger/OpenAPI support
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -27,46 +38,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-//only configuration 
-// Seeds the database with initial data for development and testing purposes.
-//void EnsureDatabaseSeeded(IServiceProvider services)
-//{
-//    using var scope = services.CreateScope();
-//    var dbContext = scope.ServiceProvider.GetRequiredService<TaskManagerDbContext>();
-
-//    // Ensure database exists (development only)
-//    dbContext.Database.EnsureCreated();
-
-//    // Add a test item if none exist
-//    if (!dbContext.TaskItems.Any())
-//    {
-//        var user = new User
-//        {
-//            UserName = "admin",
-//            Email = "admin@example.com",
-//            FullName = "Administrador",
-//            PasswordHash = "hashed_password", // demo only
-//            IsActive = true
-//        };
-
-//        var task = new TaskItem
-//        {
-//            Title = "Primera tarea",
-//            Description = "Esta es una tarea de prueba",
-//            IsCompleted = false,
-//            User = user
-//        };
-
-//        dbContext.Users.Add(user);
-//        dbContext.TaskItems.Add(task);
-//        dbContext.SaveChanges();
-//    }
-
-//    // Read and print the data
-//    var tasks = dbContext.TaskItems.ToList();
-//    foreach (var task in tasks)
-//    {
-//        Console.WriteLine($"Tarea: {task.Title} - Completada: {task.IsCompleted}");
-//    }
-//}
