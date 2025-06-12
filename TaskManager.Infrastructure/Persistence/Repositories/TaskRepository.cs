@@ -9,7 +9,7 @@ public class TaskRepository(TaskManagerDbContext context) : Repository<TaskItem>
     public async Task<IEnumerable<TaskItem>> GetByUserIdAsync(Guid userId)
     {
         return await _dbSet
-            .Where(t => t.UserId == userId)
+            .Where(t => t.Id == userId)
             .ToListAsync();
     }
 }

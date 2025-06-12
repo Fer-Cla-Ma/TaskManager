@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using TaskManager.Application.Services.Interfaces;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using TaskManager.Application.Interfaces;
 using TaskManager.Domain.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,6 +11,7 @@ namespace TaskManager.API.Controllers
     [Route("api/[controller]")]
     public class TaskController(ITaskItemService taskItemService) : Controller
     {
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -43,6 +45,7 @@ namespace TaskManager.API.Controllers
             return Ok(updatedTask);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {

@@ -1,4 +1,4 @@
-﻿using TaskManager.Application.Services.Interfaces;
+﻿using TaskManager.Application.Interfaces;
 using TaskManager.Domain.Entities;
 using TaskManager.Domain.Repositories;
 

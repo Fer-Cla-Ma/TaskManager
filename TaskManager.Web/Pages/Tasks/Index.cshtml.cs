@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TaskManager.Domain.Entities;
+using TaskManager.Domain.Enums;
 
 namespace TaskManager.Web.Pages.Tasks
 {

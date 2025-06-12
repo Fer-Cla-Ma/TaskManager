@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Domain.Entities;
 
-namespace TaskManager.Application.Services.Interfaces
+namespace TaskManager.Application.Interfaces
 {
     public interface ITaskItemService
     {

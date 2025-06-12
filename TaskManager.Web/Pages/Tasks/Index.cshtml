@@ -1,7 +1,7 @@
 ﻿@page
 @model TaskManager.Web.Pages.Tasks.IndexModel
-@{
-}
+@using TaskManager.Domain.Enums
+
 
 <h1>Lista de tareas</h1>
 
@@ -18,8 +18,8 @@
 		{
 			<tr>
 				<td>@task.Title</td>
-				<td>@(task.IsCompleted ? "Si" : "No")</td>
-				<td>@(task.DueDate?.ToString("dd/MM/yyyy") ?? "-")</td>
+				<td>@(task.Status == TaskItemStatus.Completed ? "Si" : "No")</td>
+				<td>@(task.DueDate.ToString("dd/MM/yyyy") ?? "-")</td>
 			</tr>			
 		}
 	</tbody>
