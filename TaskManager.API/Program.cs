@@ -6,25 +6,20 @@ using TaskManager.API.Middleware;
 using TaskManager.Application.Interfaces;
 using TaskManager.Application.Services;
 using TaskManager.Application.Settings;
+using TaskManager.Application.DependencyInjection;
 using TaskManager.Domain.Repositories;
 using TaskManager.Infrastructure.Persistence;
 using TaskManager.Infrastructure.Persistence.Repositories;
 using TaskManager.Infrastructure.Services;
+using TaskManager.Infrastructure.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddDbContext<TaskManagerDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-//builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped<ITaskRepository, TaskRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-builder.Services.AddScoped<ITaskItemService, TaskItemService>();
-
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
 
 builder.Services.AddControllers();
 
@@ -74,3 +69,5 @@ app.UseMiddleware<ErrorHandlingMiddleware>();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }
