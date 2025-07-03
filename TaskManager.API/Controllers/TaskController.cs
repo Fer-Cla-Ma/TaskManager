@@ -11,7 +11,7 @@ namespace TaskManager.API.Controllers
     [Route("api/[controller]")]
     public class TaskController(ITaskItemService taskItemService) : Controller
     {
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -45,7 +45,7 @@ namespace TaskManager.API.Controllers
             return Ok(updatedTask);
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
