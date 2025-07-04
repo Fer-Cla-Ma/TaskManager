@@ -1,15 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TaskManager.API.Middleware;
 using TaskManager.Application.Interfaces;
-using TaskManager.Application.Services;
 using TaskManager.Application.Settings;
 using TaskManager.Application.DependencyInjection;
-using TaskManager.Domain.Repositories;
-using TaskManager.Infrastructure.Persistence;
-using TaskManager.Infrastructure.Persistence.Repositories;
 using TaskManager.Infrastructure.Services;
 using TaskManager.Infrastructure.DependencyInjection;
 
@@ -20,6 +15,19 @@ builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins(
+            //"http://localhost:5173", //React
+            "https://localhost:7175" //Blazor
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddControllers();
 
@@ -50,19 +58,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowFrontend", policy =>
-    {
-        policy.WithOrigins("http://localhost:5173")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
-
 var app = builder.Build();
-
-app.UseCors("AllowFrontend");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -72,6 +68,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 

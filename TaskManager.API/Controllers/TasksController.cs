@@ -9,7 +9,7 @@ namespace TaskManager.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TaskController(ITaskItemService taskItemService) : Controller
+    public class TasksController(ITaskItemService taskItemService) : Controller
     {
         //[Authorize]
         [HttpGet]
