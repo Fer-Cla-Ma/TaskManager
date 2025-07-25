@@ -18,6 +18,7 @@ namespace TaskManager.Application.Services
 
         public async Task<TaskItem?> CreateAsync(TaskItem task)
         {
+            task.CreatedAt = DateTime.UtcNow;
             try
             {
                 await taskRepository.AddAsync(task);

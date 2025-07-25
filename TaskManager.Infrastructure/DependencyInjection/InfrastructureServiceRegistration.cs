@@ -17,21 +17,21 @@ public static class InfrastructureServiceRegistration
     {
         if (env.IsEnvironment("Testing"))
         {
-            services.AddDbContext<TaskManagerDbContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseInMemoryDatabase("TestDb");
             });
         }
         else
         {
-            services.AddDbContext<TaskManagerDbContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
         }
 
         services.AddScoped<ITaskRepository, TaskRepository>();
-        services.AddScoped<IUserRepository, UserRepository>();
+        //services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
         return services;

@@ -1,14 +1,22 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TaskManager.API.Middleware;
-using TaskManager.Application.Interfaces;
-using TaskManager.Application.Settings;
 using TaskManager.Application.DependencyInjection;
-using TaskManager.Infrastructure.Services;
+using TaskManager.Application.Interfaces;
+using TaskManager.Application.Services;
+using TaskManager.Domain.Entities;
 using TaskManager.Infrastructure.DependencyInjection;
+using TaskManager.Infrastructure.Persistence;
+using TaskManager.Infrastructure.Services;
+using TaskManager.Infrastructure.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();

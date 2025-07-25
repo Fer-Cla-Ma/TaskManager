@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using TaskManager.Application.DTOs;
 using TaskManager.Application.Interfaces;
 using TaskManager.Domain.Entities;
 
@@ -9,9 +13,11 @@ namespace TaskManager.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TasksController(ITaskItemService taskItemService) : Controller
+    public class TasksController(
+        UserManager<ApplicationUser> userManager,
+        ITaskItemService taskItemService) : Controller
     {
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -20,12 +26,23 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] TaskItem taskItem)
+        public async Task<IActionResult> Create([FromBody] CreateTaskItemRequestDto createTaskItemRequest)
         {
-            if (taskItem == null)
+            if (createTaskItemRequest == null)
                 return BadRequest();
 
-            var createdTask = await taskItemService.CreateAsync(taskItem);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized("User ID not found in token.");
+
+            var task = new TaskItem
+            {
+                Title = createTaskItemRequest.Title,
+                Description = createTaskItemRequest.Description,
+                UserId = userId,
+            };
+
+            var createdTask = await taskItemService.CreateAsync(task);
             if (createdTask == null)
                 return StatusCode(500, "A problem happened while handling your request.");
 

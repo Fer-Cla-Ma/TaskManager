@@ -11,7 +11,7 @@ using TaskManager.Infrastructure.Persistence;
 
 namespace TaskManager.Infrastructure.Migrations
 {
-    [DbContext(typeof(TaskManagerDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20250516013612_InitialCreate")]
     partial class InitialCreate
     {

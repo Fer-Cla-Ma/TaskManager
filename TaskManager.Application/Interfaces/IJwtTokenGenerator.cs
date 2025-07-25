@@ -4,5 +4,7 @@ namespace TaskManager.Application.Interfaces;
 
 public interface IJwtTokenGenerator
 {
-    string GenerateToken(User user);
+    string CreateAccessToken(ApplicationUser user);
+
+    string CreateRefreshToken();
 }

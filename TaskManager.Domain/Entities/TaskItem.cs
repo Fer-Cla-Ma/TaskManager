@@ -1,4 +1,5 @@
-﻿using TaskItemStatus = TaskManager.Domain.Enums.TaskItemStatus;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using TaskItemStatus = TaskManager.Domain.Enums.TaskItemStatus;
 
 namespace TaskManager.Domain.Entities
 {
@@ -6,13 +7,13 @@ namespace TaskManager.Domain.Entities
     {
         public string Title { get; set; } = string.Empty;
         public string? Description { get; set; }
-        public DateTime DueDate { get; set; }
+        public DateTime? DueDate { get; set; }
         public TaskItemStatus Status { get; set; } = TaskItemStatus.Pending;
 
-        public List<TaskComment> Comments { get; set; } = [];
+        public string UserId { get; set; } = string.Empty;
 
-        //public Guid CreatorUserId { get; set; } = Guid.Empty; // usuario que creó la tarea
-        //public User CreatorUser { get; set; } = null!;
-        //public ICollection<User> AssignedUsers { get; set; } = [];
+        [ForeignKey("UserId")]
+        public ApplicationUser User { get; set; } = default!;
+
     }     
 }

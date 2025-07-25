@@ -1,45 +1,50 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using TaskManager.Application.Interfaces;
-using TaskManager.Application.Settings;
 using TaskManager.Domain.Entities;
 
 namespace TaskManager.Infrastructure.Services;
 
-public class JwtTokenGenerator : IJwtTokenGenerator
+public class JwtTokenGenerator(IConfiguration configuration) : IJwtTokenGenerator
 {
-    private readonly JwtSettings _settings;
-    public JwtTokenGenerator(IOptions<JwtSettings> options)
-    {
-        _settings = options.Value;
-    }
-    public string GenerateToken(User user)
+    //private readonly JwtSettings _jwtSettings;
+
+    //public JwtTokenGenerator(IOptions<JwtSettings> jwtOptions)
+    //{
+    //    _jwtSettings = jwtOptions.Value;
+    //}
+
+    public string CreateAccessToken(ApplicationUser user)
     {
         var claims = new[]
-       {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.Role)
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.Name, user.UserName)
         };
-
-        // Se crea una clave de seguridad simétrica a partir de la clave secreta definida en la configuración JWT.
-        // Esta clave se utiliza para firmar el token y garantizar su integridad.
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Key));
-        // Se crean las credenciales de firma utilizando la clave y el algoritmo HMAC-SHA256.
-        // Estas credenciales se usan para firmar el JWT y asegurar que no ha sido modificado.
+        
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: _settings.Issuer,
-            audience: _settings.Audience,
+            issuer: configuration["JwtSettings:Issuer"],
+            audience: configuration["JwtSettings:Audience"],
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(_settings.ExpiresInMinutes),
+            expires: DateTime.UtcNow.AddMinutes(double.Parse(configuration["JwtSettings:ExpiresAccessTokenInMinutes"]!)),
             signingCredentials: creds
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public string CreateRefreshToken()
+    {
+        return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
     }
 }

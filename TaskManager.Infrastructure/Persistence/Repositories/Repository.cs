@@ -2,9 +2,9 @@
 using TaskManager.Domain.Repositories;
 
 namespace TaskManager.Infrastructure.Persistence.Repositories;
-public class Repository<T>(TaskManagerDbContext context) : IRepository<T> where T : class
+public class Repository<T>(ApplicationDbContext context) : IRepository<T> where T : class
 {
-    protected readonly TaskManagerDbContext _context = context;
+    protected readonly ApplicationDbContext _context = context;
     protected readonly DbSet<T> _dbSet = context.Set<T>();
 
     public async Task<T?> GetByIdAsync(Guid id) =>
